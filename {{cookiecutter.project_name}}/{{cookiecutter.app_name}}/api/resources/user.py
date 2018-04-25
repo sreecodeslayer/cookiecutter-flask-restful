@@ -19,7 +19,7 @@ class UserResource(Resource):
             return jsonify({'msg': 'Missing JSON in request'}), 400
 
         user = Users.objects.get_or_404(id=uid)
-        return {'user': schema.dump(user).data}
+        return schema.jsonify(user)
 
     def put(self, uid):
         schema = UserSchema(partial=True)
@@ -27,14 +27,39 @@ class UserResource(Resource):
         if not request.is_json:
             return jsonify({'msg': 'Missing JSON in request'}), 400
 
+        user = Users.objects.get_or_404(id=uid)
+
         user, errors = schema.load(request.json)
         if errors:
             return errors, 422
-        user = Users.objects.get_or_404(id=uid)
 
-        return {'msg': 'User updated', 'user': schema.dump(user).data}
+        user.save()
+        return schema.jsonify(user)
 
     def delete(self, uid):
         user = Users.objects.get_or_404(id=uid)
 
         return {'msg': 'User deleted'}
+
+
+class UsersResource(Resource):
+
+    method_decorators = [jwt_required]
+
+    def get(self):
+        schema = UserSchema(many=True)
+
+        users = Users.objects()
+
+        return paginate(users, schema)
+
+    def post(self):
+        schema = UserSchema()
+
+        user, errors = schema.load(request.json)
+        if errors:
+            return errors, 422
+
+        user.save()
+
+        return schema.jsonify(user)
