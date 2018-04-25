@@ -25,8 +25,8 @@ def login():
     if not username or not password:
         return jsonify({'msg': 'Missing username or password'}), 400
 
-    user = User.query.filter_by(username=username).first()
-    if user is None or not pwd_context.verify(password, user.password):
+    user = User.objects.get(username=username)
+    if user is None or not pwd_context.verify(password, user.password_digest):
         return jsonify({'msg': 'Bad credentials'}), 400
 
     access_token = create_access_token(identity=user.id)
@@ -51,4 +51,4 @@ def refresh():
 
 @jwt.user_loader_callback_loader
 def user_loader_callback(identity):
-    return User.query.get(identity)
+    return User.objects.get(username=identity)
