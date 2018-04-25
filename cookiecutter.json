@@ -1,0 +1,6 @@
+{
+  "project_name": "restful_api",
+  "app_name": "myapi",
+  "db_host" : "localhost",
+  "db_port": 27017
+}
