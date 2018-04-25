@@ -1,7 +1,7 @@
 from flask import Flask
 
 from {{cookiecutter.app_name}} import auth, api
-from {{cookiecutter.app_name}}.extensions import db, jwt, migrate
+from {{cookiecutter.app_name}}.extensions import db, jwt
 
 
 def create_app(config=None, testing=False, cli=False):
