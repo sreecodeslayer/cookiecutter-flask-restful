@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 from {{cookiecutter.app_name}}.models import Users
 from {{cookiecutter.app_name}}.schemas import UserSchema
 from {{cookiecutter.app_name}}.extensions import db
-from {{cookiecutter.app_name}}.commons.paginator import paginate
+from {{cookiecutter.app_name}}.helpers.paginator import paginate
 
 
 class UserResource(Resource):
