@@ -1,4 +1,9 @@
-from marshmallow import fields, validate
+from marshmallow import (
+    fields,
+    validate,
+    post_load
+)
+
 from {{cookiecutter.app_name}}.extensions import ma
 
 
@@ -10,14 +15,14 @@ class ObjectId(fields.Field):
 
 
 class UserSchema(ma.Schema):
-    _id = ObjectId(load_only=True)
+    _id = ObjectId(dump_only=True)
     username = ma.String(required=True)
     email = ma.String(required=True,
                       validate=validate.Email(
                           error='Not a valid email address'))
-    password_digest = ma.String(load_only=True, required=True)
+    passwd_digest = ma.String(load_only=True, required=True)
 
+    @post_load
+    def make_user(self, data):
+        return Users(**data)
 
-    class Meta:
-        # Fields to expose
-        fields = ('email', 'username', '_id')

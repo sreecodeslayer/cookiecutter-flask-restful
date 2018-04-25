@@ -12,9 +12,8 @@ class Users(db.Document):
         'indexes': ['username', 'email']
     }
 
-    def __init__(self, arg):
-        super(Users, self).__init__()
-        self.passwd_digest = pwd_context.hash(self.passwd_digest)
+    def __init__(self, **kwargs):
+        super(Users, self).__init__(**kwargs)
 
     def __repr__(self):
         return '(User : %s)' % self.username
