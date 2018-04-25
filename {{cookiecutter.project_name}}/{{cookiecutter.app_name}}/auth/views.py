@@ -40,6 +40,7 @@ def login():
     }
     return jsonify(ret), 200
 
+
 @blueprint.route('/signup', methods=['POST'])
 def signup():
     '''Authenticate user and return token
@@ -48,14 +49,14 @@ def signup():
         return jsonify({'msg': 'Missing JSON in request'}), 400
     schema = UserSchema()
 
-    user,errors = schema.load(request.json)
+    user, errors = schema.load(request.json)
     if errors:
         return jsonify(errors), 422
     try:
         user.passwd_digest = pwd_context.hash(user.passwd_digest)
         user.save()
     except NotUniqueError as e:
-        return jsonify({'msg':'User exists with under that email/username'}), 422
+        return jsonify({'msg': 'User exists with under that email/username'}), 422
 
     return schema.jsonify(user)
 
