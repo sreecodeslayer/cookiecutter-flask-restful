@@ -1,9 +1,9 @@
 DEBUG = True
 SECRET_KEY = "changeme"
 
-HOST = '{{cookiecuter.db_host}}'
-PORT = {{cookiecuter.db_port}}
-DB = '{{cookiecuter.app_name|upper}}'
+HOST = '{{cookiecutter.db_host}}'
+PORT = {{cookiecutter.db_port}}
+DB = '{{cookiecutter.app_name|upper}}'
 
 MONGODB_SETTINGS = [{
     'db': DB,
