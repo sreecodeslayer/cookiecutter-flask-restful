@@ -1,1 +1,4 @@
-from .user import UserResource
+from .user import (
+    UserResource,
+    UsersResource
+)
