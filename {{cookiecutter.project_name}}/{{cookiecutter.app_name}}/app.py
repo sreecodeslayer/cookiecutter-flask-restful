@@ -11,6 +11,7 @@ def create_app(config=None, testing=False, cli=False):
 
     configure_app(app, testing)
     configure_extensions(app, cli)
+    register_blueprints(app)
 
     return app
 
@@ -35,3 +36,10 @@ def configure_extensions(app, cli):
     '''
     db.init_app(app)
     jwt.init_app(app)
+
+
+def register_blueprints(app):
+    '''register all blueprints for application
+    '''
+    app.register_blueprint(auth.views.blueprint)
+    app.register_blueprint(api.views.blueprint)
