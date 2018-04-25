@@ -12,3 +12,7 @@ flask_mongoengine == 0.9.5
 
 # {{cookiecutter.project_name}}/{{cookiecutter.app_name}}/extensions.py: 1
 passlib == 1.7.1
+
+Flask-RESTful==0.3.6
+
+gunicorn==19.7.1
