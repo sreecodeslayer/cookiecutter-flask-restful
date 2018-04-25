@@ -5,7 +5,7 @@ from marshmallow import (
 )
 
 from {{cookiecutter.app_name}}.extensions import ma
-
+from {{cookiecutter.app_name}}.models import Users
 
 class ObjectId(fields.Field):
     def _serialize(self, value, attr, obj):

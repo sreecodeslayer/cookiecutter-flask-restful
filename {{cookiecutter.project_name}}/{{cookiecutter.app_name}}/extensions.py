@@ -6,3 +6,4 @@ from flask_mongoengine import MongoEngine
 db = MongoEngine()
 jwt = JWTManager()
 ma = Marshmallow()
+pwd_context = pbkdf2_sha256
