@@ -1,4 +1,4 @@
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, make_response
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -6,9 +6,9 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 
-from {{cookiecutter.app_name}}.models import Users
-from {{cookiecutter.app_name}}.schemas import UserSchema
-from {{cookiecutter.app_name}}.extensions import pwd_context, jwt
+from tripee.models import Users
+from tripee.schemas import UserSchema
+from tripee.extensions import pwd_context, jwt
 
 from mongoengine.errors import NotUniqueError
 
@@ -20,25 +20,22 @@ def login():
     '''Authenticate user and return token
     '''
     if not request.is_json:
-        return jsonify({'msg': 'Missing JSON in request'}), 400
+        return make_response(
+            jsonify(msg='Missing JSON in request'), 400)
 
     username = request.json.get('username')
     password = request.json.get('password')
     if not username or not password:
-        return jsonify({'msg': 'Missing username or password'}), 400
+        return make_response(
+            jsonify(msg='Missing username or password'), 400)
 
     user = Users.objects.get_or_404(username=username)
     if not pwd_context.verify(password, user.passwd_digest):
-        return jsonify({'msg': 'User creds invalid'}), 400
+        return make_response(
+            jsonify(msg='User creds invalid'), 400)
 
     access_token = create_access_token(identity=str(user.id))
-    refresh_token = create_refresh_token(identity=str(user.id))
-
-    ret = {
-        'access_token': access_token,
-        'refresh_token': refresh_token
-    }
-    return jsonify(ret), 200
+    return jsonify(access_token=access_token), 200
 
 
 @blueprint.route('/signup', methods=['POST'])
@@ -46,7 +43,8 @@ def signup():
     '''Authenticate user and return token
     '''
     if not request.is_json:
-        return jsonify({'msg': 'Missing JSON in request'}), 400
+        return make_response(
+            jsonify(msg='Missing JSON in request'), 400)
     schema = UserSchema()
 
     user, errors = schema.load(request.json)
@@ -56,7 +54,10 @@ def signup():
         user.passwd_digest = pwd_context.hash(user.passwd_digest)
         user.save()
     except NotUniqueError as e:
-        return jsonify({'msg': 'User exists with under that email/username'}), 422
+        return make_response(
+            jsonify(msg='User exists with under that email/username'),
+            422
+        )
 
     return schema.jsonify(user)
 
