@@ -2,7 +2,7 @@ from .paginator import paginate
 import os
 
 
-def load_conf():
+def loadconf():
     '''
     Load the server configuration
     '''
