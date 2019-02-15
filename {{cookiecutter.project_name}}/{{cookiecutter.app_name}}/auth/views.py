@@ -6,9 +6,9 @@ from flask_jwt_extended import (
     get_jwt_identity
 )
 
-from tripee.models import Users
-from tripee.schemas import UserSchema
-from tripee.extensions import pwd_context, jwt
+from {{cookiecutter.app_name}}.models import Users
+from {{cookiecutter.app_name}}.schemas import UserSchema
+from {{cookiecutter.app_name}}.extensions import pwd_context, jwt
 
 from mongoengine.errors import NotUniqueError
 
